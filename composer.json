@@ -1,0 +1,15 @@
+{
+    "name": "user/payment_php",
+    "description": "ayment gateway siakad",
+    "type": "no",
+    "license": "gpl",
+    "authors": [
+        {
+            "name": "muh rifai",
+            "email": "48577618+muhrifai7@users.noreply.github.com"
+        }
+    ],
+    "require": {
+        "veritrans/veritrans-php": "^1.2"
+    }
+}
