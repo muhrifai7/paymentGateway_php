@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta http-equiv="x-ua-compatible" content="ie=edge">
-  <title>KIOSTR</title>
+  <title>Siakad</title>
   <!-- Font Awesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.11.2/css/all.css">
   <!-- Bootstrap core CSS -->
@@ -43,6 +43,9 @@
     }
 
   </style>
+  <script type="text/javascript"
+            src="https://app.sandbox.midtrans.com/snap/snap.js"
+            data-client-key="SB-Mid-client-Qn-opZodkJstvvC8"></script>
 </head>
 
 <body>
@@ -53,7 +56,7 @@
 
       <!-- Brand -->
       <a class="navbar-brand waves-effect" href="https://www.kodetr.com" target="_blank">
-        <strong class="blue-text">KIOSTR</strong>
+        <strong class="blue-text">Siakad</strong>
       </a>
 
       <!-- Collapse -->
@@ -72,13 +75,7 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="ttps://www.kodetr.com" target="_blank">Brands</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="ttps://www.kodetr.com"
-              target="_blank">Sale</a>
-          </li>
+         
         </ul>
 
           <!-- Right -->
@@ -142,6 +139,7 @@
 
                 <h4 class="font-weight-bold blue-text">
                   <strong>Rp 120.000</strong>
+                   <button id='checkout-button'>Checkout</button>
                 </h4>
 
               </div>
@@ -154,119 +152,7 @@
           <!--Grid column-->
 
           <!--Grid column-->
-          <div class="col-lg-3 col-md-6 mb-4">
-
-            <!--Card-->
-            <div class="card">
-
-              <!--Card image-->
-              <div class="view overlay">
-                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/13.jpg" class="card-img-top"
-                  alt="">
-                <a>
-                  <div class="mask rgba-white-slight"></div>
-                </a>
-              </div>
-              <!--Card image-->
-
-              <!--Card content-->
-              <div class="card-body text-center">
-                <h5>
-                  <strong>
-                    <a href="https://kodetr.000webhostapp.com/product.php" class="dark-grey-text">Sweatshirt</a>
-                  </strong>
-                </h5>
-
-                <h4 class="font-weight-bold blue-text">
-                   <strong>Rp 150.000</strong>
-                </h4>
-
-              </div>
-              <!--Card content-->
-
-            </div>
-            <!--Card-->
-
-          </div>
-          <!--Grid column-->
-
-          <!--Grid column-->
-          <div class="col-lg-3 col-md-6 mb-4">
-
-            <!--Card-->
-            <div class="card">
-
-              <!--Card image-->
-              <div class="view overlay">
-                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/14.jpg" class="card-img-top"
-                  alt="">
-                <a>
-                  <div class="mask rgba-white-slight"></div>
-                </a>
-              </div>
-              <!--Card image-->
-
-              <!--Card content-->
-              <div class="card-body text-center">
-                <!--Category & Title-->
-                <h5>
-                  <strong>
-                    <a href="https://kodetr.000webhostapp.com/product.php" class="dark-grey-text">Grey blouse
-                      <span class="badge badge-pill primary-color">bestseller</span>
-                    </a>
-                  </strong>
-                </h5>
-
-                <h4 class="font-weight-bold blue-text">
-                  <strong>Rp 220.000</strong>
-                </h4>
-
-              </div>
-              <!--Card content-->
-
-            </div>
-            <!--Card-->
-
-          </div>
-          <!--Grid column-->
-
-          <!--Fourth column-->
-          <div class="col-lg-3 col-md-6 mb-4">
-
-            <!--Card-->
-            <div class="card">
-
-              <!--Card image-->
-              <div class="view overlay">
-                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/15.jpg" class="card-img-top"
-                  alt="">
-                <a>
-                  <div class="mask rgba-white-slight"></div>
-                </a>
-              </div>
-              <!--Card image-->
-
-              <!--Card content-->
-              <div class="card-body text-center">
-                <h5>
-                  <strong>
-                    <a href="" class="dark-grey-text">Black jacket</a>
-                  </strong>
-                </h5>
-
-                <h4 class="font-weight-bold blue-text">
-                   <strong>Rp 210.000</strong>
-                </h4>
-
-              </div>
-              <!--Card content-->
-
-            </div>
-            <!--Card-->
-
-          </div>
-          <!--Fourth column-->
-
+        
         </div>
         <!--Grid row-->
 
@@ -480,7 +366,7 @@
 
     <!--Copyright-->
     <div class="footer-copyright py-3">
-      <a href="https://kodetr.com/" target="_blank"> KIOSTR </a>
+      <a href="https://kodetr.com/" target="_blank"> Siakad </a>
        © 2019
     </div>
     <!--/.Copyright-->
@@ -503,5 +389,31 @@
     new WOW().init();
 
   </script>
+  <script>
+      var token = "c3c4ef88-fd11-4baf-847f-816e85fe2a54"
+
+      var checkoutBtn = document.getElementById("checkout-button");
+      
+      checkoutBtn.onclick = function(){
+        console.log('opening snap popup:');
+        
+        // Open Snap popup with defined callbacks.
+        snap.pay(token, {
+          onSuccess: function(result) {
+            console.log("SUCCESS", result);
+            alert("Payment accepted \r\n"+JSON.stringify(result));
+          },
+          onPending: function(result) {
+            console.log("Payment pending", result);
+            alert("Payment pending \r\n"+JSON.stringify(result));
+          },
+          onError: function() {
+            console.log("Payment error");
+          }
+        });
+        // For more advanced use, refer to: https://snap-docs.midtrans.com/#snap-js
+
+      }
+    </script>
 </body>
 </html>
