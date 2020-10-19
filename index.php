@@ -1,3 +1,84 @@
+<?php
+
+require_once (__FILE__) . "/vendor/autoload.php";
+
+Veritrans_Config::$serverKey = "SB-Mid-server-gxOdmq1-eNsrN5ZBiu6SRYpt";
+Veritrans_Config::$isSanitized = true;
+Veritrans_Config::$isProduction = false;
+Veritrans_Config::$is3ds = true;
+// Required
+$transaction_details = array(
+  'order_id' => rand(),
+  'gross_amount' => 94000, // no decimal allowed for creditcard
+);
+
+// Optional
+$item1_details = array(
+  'id' => 'a1',
+  'price' => 18000,
+  'quantity' => 3,
+  'name' => "Apple"
+);
+
+// Optional
+$item2_details = array(
+  'id' => 'a2',
+  'price' => 20000,
+  'quantity' => 2,
+  'name' => "Orange"
+);
+
+// Optional
+$item_details = array($item1_details, $item2_details);
+
+// Optional
+$billing_address = array(
+  'first_name'    => "Andri",
+  'last_name'     => "Litani",
+  'address'       => "Mangga 20",
+  'city'          => "Jakarta",
+  'postal_code'   => "16602",
+  'phone'         => "081122334455",
+  'country_code'  => 'IDN'
+);
+
+// Optional
+$shipping_address = array(
+  'first_name'    => "Obet",
+  'last_name'     => "Supriadi",
+  'address'       => "Manggis 90",
+  'city'          => "Jakarta",
+  'postal_code'   => "16601",
+  'phone'         => "08113366345",
+  'country_code'  => 'IDN'
+);
+
+// Optional
+$customer_details = array(
+  'first_name'    => "Andri",
+  'last_name'     => "Litani",
+  'email'         => "andri@litani.com",
+  'phone'         => "081122334455",
+  'billing_address'  => $billing_address,
+  'shipping_address' => $shipping_address
+);
+
+// Optional, remove this to display all available payment methods
+$enable_payments = array('credit_card', 'cimb_clicks', 'mandiri_clickpay', 'echannel');
+
+// Fill transaction details
+$transaction = array(
+  'enabled_payments' => $enable_payments,
+  'transaction_details' => $transaction_details,
+  'customer_details' => $customer_details,
+  'item_details' => $item_details,
+);
+
+$snapToken = Veritrans_Snap::getSnapToken($transaction);
+echo "snapToken = " . $snapToken;
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -41,35 +122,31 @@
         height: 100vh;
       }
     }
-
   </style>
-  <script type="text/javascript"
-            src="https://app.sandbox.midtrans.com/snap/snap.js"
-            data-client-key="SB-Mid-client-Qn-opZodkJstvvC8"></script>
+  <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="SB-Mid-client-Qn-opZodkJstvvC8"></script>
 </head>
 
 <body>
-<!-- Modal -->
-<div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-  aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+  <!-- Modal -->
+  <div class="modal fade" id="basicExampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          ...
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="checkout-button">Save changes</button>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
   <!-- Navbar -->
   <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
@@ -81,8 +158,7 @@
       </a>
 
       <!-- Collapse -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -96,10 +172,10 @@
               <span class="sr-only">(current)</span>
             </a>
           </li>
-         
+
         </ul>
 
-          <!-- Right -->
+        <!-- Right -->
         <ul class="navbar-nav nav-flex-icons">
           <li class="nav-item">
             <a class="nav-link waves-effect">
@@ -133,14 +209,13 @@
 
           <!--Grid column-->
           <div class="col-lg-3 col-md-6 mb-4">
-
+            <pre><div id="result-json">JSON result will appear here after payment:<br></div></pre>
             <!--Card-->
             <div class="card">
 
               <!--Card image-->
               <div class="view overlay">
-                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg" class="card-img-top"
-                  alt="">
+                <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Vertical/12.jpg" class="card-img-top" alt="">
                 <a>
                   <div class="mask rgba-white-slight"></div>
                 </a>
@@ -160,7 +235,7 @@
 
                 <h4 class="font-weight-bold blue-text">
                   <strong>Rp 120.000</strong>
-                   <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicExampleModal">Checkout</button>
+                  <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#basicExampleModal">Checkout</button>
                 </h4>
 
               </div>
@@ -171,18 +246,18 @@
 
           </div>
           <!--Grid column-->
-          
+
           <!--Grid column-->
-        
+
         </div>
         <!--Grid row-->
 
-       
+
 
       </section>
       <!--Section: Products v.3-->
 
-     
+
 
     </div>
   </main>
@@ -194,7 +269,7 @@
     <!--Copyright-->
     <div class="footer-copyright py-3">
       <a href="https://kodetr.com/" target="_blank"> Siakad </a>
-       © 2019
+      © 2019
     </div>
     <!--/.Copyright-->
 
@@ -214,33 +289,37 @@
   <script type="text/javascript">
     // Animations initialization
     new WOW().init();
-
   </script>
   <script>
-      var token = "c3c4ef88-fd11-4baf-847f-816e85fe2a54"
+    var token = "c3c4ef88-fd11-4baf-847f-816e85fe2a54"
 
-      var checkoutBtn = document.getElementById("checkout-button");
-      
-      checkoutBtn.onclick = function(){
-        console.log('opening snap popup:');
-        
-        // Open Snap popup with defined callbacks.
-        snap.pay(token, {
-          onSuccess: function(result) {
-            console.log("SUCCESS", result);
-            alert("Payment accepted \r\n"+JSON.stringify(result));
-          },
-          onPending: function(result) {
-            console.log("Payment pending", result);
-            alert("Payment pending \r\n"+JSON.stringify(result));
-          },
-          onError: function() {
-            console.log("Payment error");
-          }
-        });
-        // For more advanced use, refer to: https://snap-docs.midtrans.com/#snap-js
+    var checkoutBtn = document.getElementById("checkout-button");
 
-      }
-    </script>
+    checkoutBtn.onclick = function() {
+      console.log('opening snap popup:');
+
+      // Open Snap popup with defined callbacks.
+      snap.pay('<?= $snapToken ?>', {
+        // Optional
+        onSuccess: function(result) {
+          /* You may add your own js here, this is just example */
+          document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        },
+        // Optional
+        onPending: function(result) {
+          /* You may add your own js here, this is just example */
+          document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        },
+        // Optional
+        onError: function(result) {
+          /* You may add your own js here, this is just example */
+          document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        }
+      });
+      // For more advanced use, refer to: https://snap-docs.midtrans.com/#snap-js
+
+    }
+  </script>
 </body>
+
 </html>

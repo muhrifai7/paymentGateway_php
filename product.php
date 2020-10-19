@@ -28,8 +28,7 @@
       </a>
 
       <!-- Collapse -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
@@ -47,12 +46,11 @@
             <a class="nav-link waves-effect" href="ttps://www.kodetr.com" target="_blank">Brands</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link waves-effect" href="ttps://www.kodetr.com"
-              target="_blank">Sale</a>
+            <a class="nav-link waves-effect" href="ttps://www.kodetr.com" target="_blank">Sale</a>
           </li>
         </ul>
 
-         <!-- Right -->
+        <!-- Right -->
         <ul class="navbar-nav nav-flex-icons">
           <li class="nav-item">
             <a class="nav-link waves-effect">
@@ -106,10 +104,10 @@
             <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et dolor suscipit libero eos atque quia ipsa
               sint voluptatibus!
               Beatae sit assumenda asperiores iure at maxime atque repellendus maiores quia sapiente.</p>
-            
-              <button class="btn btn-primary btn-md my-0 p" type="submit">Buy
-                  <i class="fas fa-shopping-Buy ml-1"></i>
-              </button>
+
+            <button class="btn btn-primary btn-md my-0 p" type="submit">Buy
+              <i class="fas fa-shopping-Buy ml-1"></i>
+            </button>
 
           </div>
           <!--Content-->
@@ -126,7 +124,7 @@
     <!--Copyright-->
     <div class="footer-copyright py-3">
       <a href="https://kodetr.com/" target="_blank"> KIOSTR </a>
-       © 2019
+      © 2019
     </div>
     <!--/.Copyright-->
 
@@ -146,7 +144,6 @@
   <script type="text/javascript">
     // Animations initialization
     new WOW().init();
-
   </script>
 </body>
 
