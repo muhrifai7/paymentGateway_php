@@ -1,6 +1,6 @@
 <?php
 
-require_once (__FILE__) . "/vendor/autoload.php";
+require_once dirname(__FILE__) . '/vendor/autoload.php';
 
 Veritrans_Config::$serverKey = "SB-Mid-server-gxOdmq1-eNsrN5ZBiu6SRYpt";
 Veritrans_Config::$isSanitized = true;
@@ -9,66 +9,58 @@ Veritrans_Config::$is3ds = true;
 // Required
 $transaction_details = array(
   'order_id' => rand(),
-  'gross_amount' => 94000, // no decimal allowed for creditcard
+  'gross_amount' => 10000, // no decimal allowed for creditcard
 );
 
 // Optional
 $item1_details = array(
   'id' => 'a1',
-  'price' => 18000,
-  'quantity' => 3,
-  'name' => "Apple"
+  'price' => 10000,
+  'quantity' => 1,
+  'name' => "Pembayaran Sks"
 );
 
 // Optional
-$item2_details = array(
-  'id' => 'a2',
-  'price' => 20000,
-  'quantity' => 2,
-  'name' => "Orange"
-);
-
-// Optional
-$item_details = array($item1_details, $item2_details);
+$item_details = array($item1_details);
 
 // Optional
 $billing_address = array(
-  'first_name'    => "Andri",
-  'last_name'     => "Litani",
-  'address'       => "Mangga 20",
-  'city'          => "Jakarta",
-  'postal_code'   => "16602",
-  'phone'         => "081122334455",
-  'country_code'  => 'IDN'
+  // 'first_name'    => "Andri",
+  // 'last_name'     => "Litani",
+  // 'address'       => "Mangga 20",
+  // 'city'          => "Jakarta",
+  // 'postal_code'   => "16602",
+  // 'phone'         => "081122334455",
+  // 'country_code'  => 'IDN'
 );
 
 // Optional
 $shipping_address = array(
-  'first_name'    => "Obet",
-  'last_name'     => "Supriadi",
-  'address'       => "Manggis 90",
-  'city'          => "Jakarta",
-  'postal_code'   => "16601",
-  'phone'         => "08113366345",
-  'country_code'  => 'IDN'
+  // 'first_name'    => "Obet",
+  // 'last_name'     => "Supriadi",
+  // 'address'       => "Manggis 90",
+  // 'city'          => "Jakarta",
+  // 'postal_code'   => "16601",
+  // 'phone'         => "08113366345",
+  // 'country_code'  => 'IDN'
 );
 
 // Optional
 $customer_details = array(
-  'first_name'    => "Andri",
+  'first_name'    => "Mahasiswa",
   'last_name'     => "Litani",
-  'email'         => "andri@litani.com",
+  'email'         => "muhrifai554@gmail.com",
   'phone'         => "081122334455",
-  'billing_address'  => $billing_address,
-  'shipping_address' => $shipping_address
+  // 'billing_address'  => $billing_address,
+  // 'shipping_address' => $shipping_address
 );
 
 // Optional, remove this to display all available payment methods
-$enable_payments = array('credit_card', 'cimb_clicks', 'mandiri_clickpay', 'echannel');
+// $enable_payments = array('credit_card', 'cimb_clicks', 'mandiri_clickpay', 'echannel');
 
 // Fill transaction details
 $transaction = array(
-  'enabled_payments' => $enable_payments,
+  // 'enabled_payments' => $enable_payments,
   'transaction_details' => $transaction_details,
   'customer_details' => $customer_details,
   'item_details' => $item_details,
@@ -141,8 +133,8 @@ echo "snapToken = " . $snapToken;
           ...
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="checkout-button">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Batalkan</button>
+          <button type="button" class="btn btn-primary" id="checkout-button">Bayar</button>
         </div>
       </div>
     </div>
@@ -291,8 +283,6 @@ echo "snapToken = " . $snapToken;
     new WOW().init();
   </script>
   <script>
-    var token = "c3c4ef88-fd11-4baf-847f-816e85fe2a54"
-
     var checkoutBtn = document.getElementById("checkout-button");
 
     checkoutBtn.onclick = function() {
@@ -302,17 +292,22 @@ echo "snapToken = " . $snapToken;
       snap.pay('<?= $snapToken ?>', {
         // Optional
         onSuccess: function(result) {
+          console.log('okekeke,process')
           /* You may add your own js here, this is just example */
           document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
         },
         // Optional
         onPending: function(result) {
-          /* You may add your own js here, this is just example */
+          console.log('okekeke,process pendiing')
+
+          /* create or post data to database table request transaksi
+              Handle HTTP Notification
+          */
           document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
         },
         // Optional
         onError: function(result) {
-          /* You may add your own js here, this is just example */
+          /* show error*/
           document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
         }
       });
@@ -323,3 +318,24 @@ echo "snapToken = " . $snapToken;
 </body>
 
 </html>
+<!-- 
+"status_code": "201",
+"status_message": "Transaksi sedang diproses",
+"transaction_id": "44f7114c-7bde-4294-ac5a-5ba2a27be6b2",
+"order_id": "1840162876",
+"gross_amount": "10000.00",
+"payment_type": "bank_transfer",
+"transaction_time": "2020-10-19 20:06:02",
+"transaction_status": "pending",
+"va_numbers": [
+{
+"bank": "bca",
+"va_number": "64414339697"
+}
+],
+"fraud_status": "accept",
+"bca_va_number": "64414339697",
+"pdf_url": "https://app.sandbox.midtrans.com/snap/v1/transactions/dc238641-d10b-4d38-9249-7de98354b5da/pdf",
+"finish_redirect_url": "http://example.com/finish?order_id=1840162876&status_code=201&transaction_status=pending"
+
+ -->
